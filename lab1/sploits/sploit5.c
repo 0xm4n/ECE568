@@ -15,10 +15,10 @@
  * 
  * attack buffer  = [Shellcode][NOP][Control String][NOP][Return Address]
  *
- * 0x40(64)  ->  0x40a4fe68
- * 0xa4(164) ->  0x40a4fe69
- * 0xf9(249) ->  0x40a4fe6a
- * 0x60(352) ->  0x40a4fe6b
+ * 0x40(64)  ->  0x40a4fe6b
+ * 0xa4(164) ->  0x40a4fe6a
+ * 0xf9(249) ->  0x40a4fe69
+ * 0x60(352) ->  0x40a4fe68
  *
  * 			    64
  * 164 - 64  = 100
