@@ -1,5 +1,5 @@
 #Zhenyi Tang, 1007177840, zhenyi.tang@mail.utoronto.ca
-#Hongbo Zhu, 1006893792， hongbo.zhu@mail.utoronto.ca
+#
 
 Common: It sets up a context object. This context object is then used to create a new connection object for each new SSL connection. These connection objects are used to do SSL handshakes, reads and writes.
 
@@ -11,7 +11,7 @@ Client: It initiates an SSL connection to the server and then transmits an HTTP 
 3. Send the request data to the server and read data from server's response.
 4. Destroy the SSL context objects and exit.
 
-Server:  It waits for TCP connections from clients. When it accepts one it forks a child process to handle it and negotiates an SSL connection. Once the connection is negotiated, it reads the client's HTTP request. It then transmits the HTTP response to the client. Once the response is transmitted it closes the connection and the child process will exit.
+Server:  It waits for TCP connections from clients. When it accepts one it negotiates an SSL connection. Once the connection is negotiated, it reads the client's HTTP request. It then transmits the HTTP response to the client. Once the response is transmitted it closes the connection.
 1. Perform the server side of the SSL handshake.
 2. Read the request content from the client and put the data to a buffer.
 3. Write the response

@@ -148,7 +148,7 @@ void check_cert(SSL *ssl)
         err_exit(FMT_EMAIL_MISMATCH);
 	
 	/*Get the certificate issuer*/
-	X509_NAME_oneline(X509_get_issuer_name(peer), peer_certificate_issuer, 256);
+	X509_NAME_get_text_by_NID(X509_get_issuer_name(peer), NID_commonName, peer_certificate_issuer, 256);
 
     printf(FMT_SERVER_INFO, peer_CN, peer_email, peer_certificate_issuer);
 }

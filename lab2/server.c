@@ -100,12 +100,8 @@ int main(int argc, char **argv)
 					switch (r)
 					{
 						case 0:
-							r = SSL_shutdown(ssl);
-							if (r != 1){
-								berr_exit(FMT_INCOMPLETE_CLOSE);
-							}
+							berr_exit(FMT_INCOMPLETE_CLOSE);
 						case 1:
-							// Success
 							break;
 						default:
 							berr_exit(FMT_INCOMPLETE_CLOSE);
@@ -126,6 +122,17 @@ int main(int argc, char **argv)
 			{
 				case SSL_ERROR_NONE:
 					break;
+				case SSL_ERROR_ZERO_RETURN:
+					r = SSL_shutdown(ssl);
+					switch (r)
+					{
+						case 0:
+							berr_exit(FMT_INCOMPLETE_CLOSE);
+						case 1:
+							break;
+						default:
+							berr_exit(FMT_INCOMPLETE_CLOSE);
+					}
 				case SSL_ERROR_SYSCALL:
 					berr_exit(FMT_INCOMPLETE_CLOSE);
 					break;
