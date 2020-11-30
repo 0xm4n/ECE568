@@ -1,0 +1,8 @@
+/share/copy/ece568f/lab4/run_bind.sh -c /u/b/tangzh36/lab4/etc/named.conf
+
+cd lab4
+python dnsproxy_starter.py --port 5467 --dns_port 2632 
+python dnsproxy_starter.py --port 5467 --dns_port 2632 --spoof_response
+
+
+dig @127.0.0.1 -p 5467 ecf.utoronto.ca
