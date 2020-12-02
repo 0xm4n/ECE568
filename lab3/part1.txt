@@ -14,4 +14,3 @@
     <br>
     <input type="submit" name="login" id="ece568-2020f-submit" value="login" onclick="phish()">
 </form>
-
