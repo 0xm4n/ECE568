@@ -1,0 +1,17 @@
+#Zhenyi Tang, 1007177840, zhenyi.tang@mail.utoronto.ca
+#Hongbo Zhu, 1006893792， hongbo.zhu@mail.utoronto.ca
+
+Part 1 Explanation:
+1.Use command: dig ecf.utoronto.ca, the ipv4 address of eco.utoronto.ca will be in the answer section.
+2.Use command: dig ns ecf.utoronto.ca, the name server will be in the answer section, and the corresponding IP address will be in the additional section.
+3.Use command: dig mx ecf.utoronto.ca. the mail server will be in the answer section, and the corresponding IP address will be in the additional section 
+4.Use command: dig @(IP address of the listen-on port of the BIND server) ecf.utoronto.ca to direct dig to local BIND server
+
+Part2. Explanation:
+The proxy will be listening on the a port which we will use dig to ask for IP address. When it receives the query, it will forward to the BIND server. And when it receives the reply from the BIND server, it will forward then back to dig.
+
+Part3 Explanation:
+In this part, we will use the proxy from the last part, but when it receives the reply back from the BIND, it would change the IPv4 address to 5.6.6.8 and name servers to [ns1.dnsattacker.net,ns2.dnsattacker.net] and then forward then to dig.
+
+Part4 Explanation:
+At part 4, a query asking for the IP address of manipulated domain name in example.com domain will be sent to BIND server. Then lots of spoofed DNS replies with the example.com's name servers address of [ns1.dnsattacker.net,ns2.dnsattacker.net] and guessed query id will be sent to BIND server too. Repeating the process for about 30 seconds and check the cached name server address of www.example.com, it should be poisoned .
